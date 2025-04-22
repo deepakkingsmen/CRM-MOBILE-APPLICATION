@@ -33,6 +33,27 @@ const App = () => {
     const fetchAllData = async () => {
       try {
         setLoading(true);
+  
+        // DUMMY DATA START
+        const dummyEmail = [
+          { name: 'John Doe', details: 'Sent product info', timestamp: new Date(), type: 'email' },
+          { name: 'Alice Smith', details: 'Followed up on proposal', timestamp: new Date(), type: 'email' },
+        ];
+  
+        const dummyWhatsapp = [
+          { name: 'Bob Marley', details: 'Asked for pricing', timestamp: new Date(), type: 'whatsapp' },
+        ];
+  
+        const dummyMeeting = [
+          { name: 'Charlie Brown', details: 'Scheduled a Zoom meeting', timestamp: new Date(), type: 'meeting' },
+        ];
+  
+        const allData = [...dummyEmail, ...dummyWhatsapp, ...dummyMeeting];
+        setData(allData);
+        // DUMMY DATA END
+  
+        // Uncomment below when using real API
+        /*
         const [emailRes, whatsappRes, meetingRes] = await Promise.all([
           axios.get(`${baseURL}/email`),
           axios.get(`${baseURL}/whatsapp`),
@@ -44,15 +65,17 @@ const App = () => {
           ...meetingRes.data.map((d) => ({ ...d, type: 'meeting' })),
         ];
         setData(allData);
+        */
       } catch (err) {
         console.error('Error fetching data:', err.message);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchAllData();
   }, []);
+  
 
 
 
@@ -96,9 +119,9 @@ const App = () => {
         onChangeText={setQuery}
       />
 
-      <View style={styles.headerRow}>
-  <Text style={{ ...styles.headerText, flex: 1 }}>ACTIVITY</Text>
-  <Text style={{ ...styles.headerText, flex: 2 }}>SENDER</Text>
+      <View style={[styles.headerRow,{marginLeft:10}]}>
+  <Text style={{ ...styles.headerText, flex: 2 }}>ACTIVITY</Text>
+  <Text style={[{ ...styles.headerText, flex: 4}]}>SENDER</Text>
   <Text style={{ ...styles.headerText, flex: 4 }}>DETAILS</Text>
 </View>
 
@@ -118,7 +141,8 @@ const App = () => {
                 <Image source={{ uri: iconMap[item.type] }} style={styles.icon} />
               </View>
               <Text style={styles.sender}>{item.name}</Text>
-              <View style={styles.detailsCell}>
+              <View style={[styles.detailsCell, { marginLeft: 5 }]}>
+
                 <Text style={styles.details}>{item.details}</Text>
                 <Text style={styles.timestamp}>
                   {new Date(item.timestamp).toLocaleString()}
@@ -140,7 +164,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     backgroundColor: '#F9F6F1',
-    flex: 1,
+    
   },
   filterBar: {
     flexDirection: 'row',
@@ -185,19 +209,20 @@ const styles = StyleSheet.create({
   },
  headerRow: {
   flexDirection: 'row',
-  justifyContent: 'space-between',
   paddingVertical: 8,
   borderBottomWidth: 1,
   borderBottomColor: '#ccc',
   backgroundColor: 'lightyellow', // debug color
-  height:40
+  height:40,
+
 },
 
 headerText: {
   fontWeight: 'bold',
   textAlign: 'center',
-  fontSize:10,
-  flex: 1, // adjust these flex values
+  fontSize:12,
+  flex: 1, 
+
 },
 
   row: {
@@ -218,8 +243,10 @@ headerText: {
     fontWeight: '500',
   },
   detailsCell: {
-    flex: 4,
-  },
+    flex: 0.5,
+    gap:15
+    
+     },
   icon: {
     width: 30,
     height: 30,
